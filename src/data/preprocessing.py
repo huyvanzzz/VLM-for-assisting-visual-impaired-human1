@@ -10,10 +10,6 @@ class POLMData:
     object_type: str
     bbox: List[float]  # [x1, y1, x2, y2]
     confidence: float
-    relative_position: str
-    distance_zone: float
-    coming_to_user: bool
-    speed: float
     def to_text(self) -> str:
         return (
             f"[OBJ] {self.object_type} "
