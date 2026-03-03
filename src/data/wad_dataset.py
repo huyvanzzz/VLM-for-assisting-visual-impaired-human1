@@ -77,7 +77,7 @@ class WADDataset(Dataset):
                     polm = POLMData(
                         object_type=bbox['label'],
                         bbox=bbox['bbox'],
-                        confidence=bbox['confidence']
+                        confidence=bbox['confidence'],
                     )
                     polm_list.append(polm)
         

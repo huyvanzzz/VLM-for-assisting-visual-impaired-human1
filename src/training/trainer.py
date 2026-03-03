@@ -15,7 +15,7 @@ class VLMTrainer:
     def __init__(self, config_path: str, checkpoint_path: Optional[str] = None):
         warnings.filterwarnings('ignore', message='.*Unused or unrecognized kwargs.*')
 
-        os.environ['PYTORCH_CUDA_ALLOC_CONF'] = 'expandable_segments:True'
+        os.environ['PYTORCH_ALLOC_CONF'] = 'expandable_segments:True'
         with open(config_path, 'r') as f:
             self.config = yaml.safe_load(f)
         
@@ -115,7 +115,7 @@ class VLMTrainer:
                 args=training_args,
                 train_dataset=train_dataset,
                 eval_dataset=eval_dataset,
-                tokenizer=vlm.tokenizer,
+                processing_class=vlm.processor,
                 data_collator=data_collator,
                 callbacks=callbacks
             )
@@ -144,7 +144,7 @@ class VLMTrainer:
         # Load adapter vào model
         print("Loading adapter weights...")
         self.model = PeftModel.from_pretrained(
-            self.model, 
+            self.model,
             checkpoint_path,
             is_trainable=True  # Quan trọng: cho phép train tiếp
         )
@@ -171,8 +171,6 @@ class VLMTrainer:
             print(f"Resuming from checkpoint: {resume_from_checkpoint}")
             self.trainer.train(resume_from_checkpoint=resume_from_checkpoint)
         else:
-            import inspect
-            print(inspect.signature(self.model.base_model.model.forward))
             self.trainer.train()
         
         print("\n✓ Training complete!")

@@ -10,13 +10,16 @@ class POLMData:
     object_type: str
     bbox: List[float]  # [x1, y1, x2, y2]
     confidence: float
-    
+    relative_position: str
+    distance_zone: float
+    coming_to_user: bool
+    speed: float
     def to_text(self) -> str:
         return (
             f"[OBJ] {self.object_type} "
             f"({self.bbox[0]:.3f}, {self.bbox[1]:.3f}, "
             f"{self.bbox[2]:.3f}, {self.bbox[3]:.3f}) "
-            f"conf={self.confidence:.2f}"
+            f"conf: {self.confidence:.2f}"
         )
 
 @dataclass
